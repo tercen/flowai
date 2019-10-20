@@ -1,0 +1,8 @@
+{
+  "name": "flowai",
+  "description": "flowai quality control operator",
+  "tags": ["flowcytometry"],
+  "authors": ["tercen"],
+  "urls": ["https://github.com/tercen/flowai_operator"],
+  "properties": []
+}
