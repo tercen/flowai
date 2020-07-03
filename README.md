@@ -15,6 +15,7 @@ Input projection|.
 Output relations|.
 ---|---
 `QCvector`         | numeric, values above 10000 are considered FAIL, under 10000 PASS
+`flag`         | character, quality flag `pass` or `fail`
 
 
 ##### Details

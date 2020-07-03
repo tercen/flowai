@@ -35,7 +35,8 @@ fc_frame <- matrix2flowset(data)
 qc_frame <- suppressWarnings(flowAI::flow_auto_qc(fc_frame, output = 2, html_report = FALSE, mini_report = FALSE, fcs_QC = FALSE, folder_results = FALSE))
 
 qc_df <- as.data.frame(exprs(qc_frame))
-qc_df <- cbind(qc_df["QCvector"], .ci = (1:nrow(qc_df)))
+flag <- ifelse(qc_df[["QCvector"]] >= 10000, "fail", "pass")
+qc_df <- cbind(qc_df["QCvector"], flag, .ci = (1:nrow(qc_df)))
 
 result <- ctx$addNamespace(qc_df)
 ctx$save(result)
