@@ -6,19 +6,36 @@ library(flowAI)
 
 matrix2flowset <- function(a_matrix){ 
   
-  minRange<- matrixStats::colMins(a_matrix)
-  maxRange<- matrixStats::colMaxs(a_matrix)
-  range<- maxRange-minRange
+  minRange <- matrixStats::colMins(a_matrix)
+  maxRange <- matrixStats::colMaxs(a_matrix)
+  rnge <- maxRange - minRange
   
-  df_params <- data.frame(name=colnames(a_matrix), desc=colnames(a_matrix), range=range, minRange=minRange, maxRange=maxRange)
+  df_params <- data.frame(
+    name = colnames(a_matrix),
+    desc = colnames(a_matrix),
+    range = rnge,
+    minRange = minRange,
+    maxRange = maxRange
+  )
+  
   params <- Biobase::AnnotatedDataFrame()
   Biobase::pData(params) <- df_params
-  Biobase::varMetadata(params) <- data.frame(labelDescription=c("Name of Parameter", "Description of Parameter","Range of Parameter","Minimum Parameter Value after Transformation","Maximum Parameter Value after Transformation"))
-  keyval <-list()
+  Biobase::varMetadata(params) <- data.frame(
+    labelDescription = c("Name of Parameter",
+                         "Description of Parameter",
+                         "Range of Parameter",
+                         "Minimum Parameter Value after Transformation",
+                         "Maximum Parameter Value after Transformation")
+  )
+  
+  keyval <- list()
   keyval$FILENAME <-"data"
   keyval$`$PAR` <- ncol(a_matrix)
-  keyval$`$P1R` <- range[1]
+  sq <- seq_len(ncol(a_matrix))
+  eval(parse(text = paste0("keyval$`$P", sq, "R` <- rnge[", sq, "];")))
   flowset <- flowCore::flowFrame(a_matrix, params, keyval)
+  
+  return(flowset)
 }
 
 ctx <- tercenCtx()
