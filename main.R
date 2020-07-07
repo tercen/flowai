@@ -40,14 +40,41 @@ matrix2flowset <- function(a_matrix){
 
 ctx <- tercenCtx()
 
+input.pars <- list(
+  second_fractionFR = ifelse(is.null(ctx$op.value('second_fractionFR')), 0.1, ctx$op.value('second_fractionFR')),
+  alphaFR = ifelse(is.null(ctx$op.value('alphaFR')), 0.01, ctx$op.value('alphaFR')),
+  decompFR = ifelse(is.null(ctx$op.value('decompFR')), TRUE, ctx$op.value('decompFR')),
+  outlier_binsFS = ifelse(is.null(ctx$op.value('outlier_binsFS')), FALSE, ctx$op.value('outlier_binsFS')),
+  pen_valueFS = ifelse(is.null(ctx$op.value('pen_valueFS')), 500, ctx$op.value('pen_valueFS')),
+  max_cptFS = ifelse(is.null(ctx$op.value('max_cptFS')), 3, ctx$op.value('max_cptFS')),
+  sideFM = ifelse(is.null(ctx$op.value('sideFM')), "both", ctx$op.value('sideFM')),
+  neg_valuesFM = ifelse(is.null(ctx$op.value('neg_valuesFM')), 1, ctx$op.value('neg_valuesFM'))
+)
+
 time <- ctx$cselect(ctx$cnames[[1]])
 
 data <- ctx$as.matrix() %>% t()
-data <- as.matrix(cbind(data,time))
+data <- as.matrix(cbind(data, time))
 
 fc_frame <- matrix2flowset(data)
 
-qc_frame <- suppressWarnings(flowAI::flow_auto_qc(fc_frame, output = 2, html_report = FALSE, mini_report = FALSE, fcs_QC = FALSE, folder_results = FALSE))
+qc_frame <- suppressWarnings(flowAI::flow_auto_qc(
+  fcsfiles = fc_frame,
+  output = 2,
+  timeCh = NULL,
+  second_fractionFR = input.pars$second_fractionFR,
+  alphaFR = input.pars$alphaFR,
+  decompFR = input.pars$decompFR,
+  outlier_binsFS = input.pars$outlier_binsFS, 
+  pen_valueFS = input.pars$pen_valueFS,
+  max_cptFS = input.pars$max_cptFS,
+  sideFM = input.pars$sideFM,
+  neg_valuesFM = input.pars$neg_valuesFM,
+  html_report = FALSE,
+  mini_report = FALSE,
+  fcs_QC = FALSE,
+  folder_results = FALSE
+))
 
 qc_df <- as.data.frame(exprs(qc_frame))
 flag <- ifelse(qc_df[["QCvector"]] >= 10000, "fail", "pass")
