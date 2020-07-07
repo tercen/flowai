@@ -48,7 +48,7 @@ input.pars <- list(
   pen_valueFS = ifelse(is.null(ctx$op.value('pen_valueFS')), 500, ctx$op.value('pen_valueFS')),
   max_cptFS = ifelse(is.null(ctx$op.value('max_cptFS')), 3, ctx$op.value('max_cptFS')),
   sideFM = ifelse(is.null(ctx$op.value('sideFM')), "both", ctx$op.value('sideFM')),
-  neg_valuesFM = ifelse(is.null(ctx$op.value('neg_valuesFM')), 1, ctx$op.value('neg_valuesFM'))
+  neg_valuesFM = ifelse(is.null(ctx$op.value('neg_valuesFM')), 1, as.double(ctx$op.value('neg_valuesFM')))
 )
 
 time <- ctx$cselect(ctx$cnames[[1]])
