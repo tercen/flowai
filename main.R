@@ -42,12 +42,12 @@ matrix2flowset <- function(a_matrix){
 ctx <- tercenCtx()
 
 input.pars <- list(
-  second_fractionFR = ifelse(is.null(ctx$op.value('second_fractionFR')), 0.1, ctx$op.value('second_fractionFR')),
-  alphaFR = ifelse(is.null(ctx$op.value('alphaFR')), 0.01, ctx$op.value('alphaFR')),
-  decompFR = ifelse(is.null(ctx$op.value('decompFR')), TRUE, ctx$op.value('decompFR')),
-  outlier_binsFS = ifelse(is.null(ctx$op.value('outlier_binsFS')), FALSE, ctx$op.value('outlier_binsFS')),
-  pen_valueFS = ifelse(is.null(ctx$op.value('pen_valueFS')), 500, ctx$op.value('pen_valueFS')),
-  max_cptFS = ifelse(is.null(ctx$op.value('max_cptFS')), 3, ctx$op.value('max_cptFS')),
+  second_fractionFR = ifelse(is.null(ctx$op.value('second_fractionFR')), 0.1, as.double(ctx$op.value('second_fractionFR'))),
+  alphaFR = ifelse(is.null(ctx$op.value('alphaFR')), 0.01, as.double(ctx$op.value('alphaFR'))),
+  decompFR = ifelse(is.null(ctx$op.value('decompFR')), TRUE, as.logical(ctx$op.value('decompFR'))),
+  outlier_binsFS = ifelse(is.null(ctx$op.value('outlier_binsFS')), FALSE, as.logical(ctx$op.value('outlier_binsFS'))),
+  pen_valueFS = ifelse(is.null(ctx$op.value('pen_valueFS')), 500, as.double(ctx$op.value('pen_valueFS'))),
+  max_cptFS = ifelse(is.null(ctx$op.value('max_cptFS')), 3, as.double(ctx$op.value('max_cptFS'))),
   sideFM = ifelse(is.null(ctx$op.value('sideFM')), "both", ctx$op.value('sideFM')),
   neg_valuesFM = ifelse(is.null(ctx$op.value('neg_valuesFM')), 1, as.double(ctx$op.value('neg_valuesFM')))
 )
