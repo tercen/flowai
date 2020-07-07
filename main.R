@@ -21,13 +21,11 @@ matrix2flowset <- function(a_matrix){
   flowset <- flowCore::flowFrame(a_matrix, params, keyval)
 }
 
-ctx = tercenCtx()
-data = ctx$as.matrix() 
+ctx <- tercenCtx()
 
-stopifnot("Time" %in% ctx$cnames)
-time <- ctx$cselect("Time")
+time <- ctx$cselect(ctx$cnames[[1]])
 
-data = t(data)
+data <- ctx$as.matrix() %>% t()
 data <- as.matrix(cbind(data,time))
 
 fc_frame <- matrix2flowset(data)
