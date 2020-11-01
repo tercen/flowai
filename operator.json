@@ -3,6 +3,65 @@
   "description": "flowai quality control operator",
   "tags": ["flowcytometry"],
   "authors": ["tercen"],
-  "urls": ["https://github.com/tercen/flowai_operator"],
-  "properties": []
+  "urls": ["https://github.com/agouy/flowai_operator"],
+  "properties": [
+  {
+    "kind": "DoubleProperty",
+    "name": "second_fractionFR",
+    "defaultValue": 0.1,
+    "description": "Fraction of a second that is used to split the time channel"
+  },
+  {
+    "kind": "DoubleProperty",
+    "name": "alphaFR",
+    "defaultValue": 0.01,
+    "description": "Level of statistical significance"
+  },
+  {
+    "kind": "BooleanProperty",
+    "name": "decompFR",
+    "defaultValue": true,
+    "description": "Indicate whether the flow rate should be decomposed in the trend and cyclical components"
+  },
+  {
+    "kind": "BooleanProperty",
+    "name": "outlier_binsFS",
+    "defaultValue": false,
+    "description": "Indicate whether outlier bins (not events) have to be removed before the changepoint detection"
+  },
+  {
+    "kind": "DoubleProperty",
+    "name": "pen_valueFS",
+    "defaultValue": 500,
+    "description": "Value of the penalty for the changepoint detection algorithm"
+  },
+  {
+    "kind": "DoubleProperty",
+    "name": "max_cptFS",
+    "defaultValue": 3,
+    "description": "Maximum number of changepoints that can be detected for each channel"
+  },
+  {
+    "kind": "EnumeratedProperty",
+    "name": "sideFM",
+    "defaultValue": "both",
+    "description": "Indicate whether the dynamic range check has to be executed on both limits",
+	  "values": [
+      "both",
+      "upper",
+      "lower"
+      ]
+  },
+  {
+    "kind": "EnumeratedProperty",
+    "name": "neg_valuesFM",
+    "defaultValue": "1",
+    "description": "Indicate the method to use for the removal of the anomalies from the lower limit of the dynamic range. Use 1 to remove negative outliers or use 2 to truncate the negative values to the cut-off indicated in the FCS file.",
+	  "values": [
+      "1",
+      "2"
+      ]
+  }
+  ]
 }
+

@@ -39,7 +39,8 @@ matrix2flowset <- function(a_matrix){
   return(flowset)
 }
 
-ctx <- tercenCtx()
+ctx <- tercenCtx(workflowId = "7eee20aa9d6cc4eb9d7f2cc2430313b6",
+                stepId = "1232824a-db16-44f5-b845-e2b11f57c4ce")
 
 input.pars <- list(
   second_fractionFR = ifelse(is.null(ctx$op.value('second_fractionFR')), 0.1, as.double(ctx$op.value('second_fractionFR'))),
