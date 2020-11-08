@@ -1,9 +1,29 @@
+options("tercen.serviceUri"= "https://tercen.com/api/v1/")
+options("tercen.username"= "fnaji")
+options("tercen.password"= "obama")
+options("tercen.workflowId"= "52206b808b44cec67b034ec84f3cdc98")
+options("tercen.stepId"= "c5e912fe-bf39-4c80-a27f-82959b2ca422")
+getOption("tercen.workflowId")
+getOption("tercen.stepId")
+
+
 library(tercen)
 library(dplyr)
-library(tidyverse)
+library(tibble)
 library(flowCore)
-library(FlowSOM)
 library(flowAI)
+
+convert_to_seconds <- function(t) {
+  t<- t[[1, drop = TRUE]]
+  if (length(t) > 2) {
+    t2 <-(t[2])
+    unit_size <- ceiling(log10(t2))
+    t <- t/(10^unit_size)
+    return(enframe(t, name = NULL))
+  } else
+    return(t)
+}
+
 
 matrix2flowset <- function(a_matrix){ 
   
@@ -39,8 +59,7 @@ matrix2flowset <- function(a_matrix){
   return(flowset)
 }
 
-ctx <- tercenCtx(workflowId = "7eee20aa9d6cc4eb9d7f2cc2430313b6",
-                stepId = "1232824a-db16-44f5-b845-e2b11f57c4ce")
+ctx <- tercenCtx()
 
 input.pars <- list(
   second_fractionFR = ifelse(is.null(ctx$op.value('second_fractionFR')), 0.1, as.double(ctx$op.value('second_fractionFR'))),
@@ -54,6 +73,7 @@ input.pars <- list(
 )
 
 time <- ctx$cselect(ctx$cnames[[1]])
+time <- convert_to_seconds(time)
 
 data <- ctx$as.matrix() %>% t()
 data <- as.matrix(cbind(data, time))
@@ -77,6 +97,7 @@ qc_frame <- suppressWarnings(flowAI::flow_auto_qc(
   fcs_QC = FALSE,
   folder_results = FALSE
 ))
+
 
 qc_df <- as.data.frame(exprs(qc_frame))
 flag <- ifelse(qc_df[["QCvector"]] >= 10000, "fail", "pass")

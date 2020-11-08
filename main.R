@@ -1,9 +1,20 @@
 library(tercen)
 library(dplyr)
-library(tidyverse)
+library(tibble)
 library(flowCore)
-library(FlowSOM)
 library(flowAI)
+
+convert_to_seconds <- function(t) {
+  t<- t[[1, drop = TRUE]]
+  if (length(t) > 2) {
+    t2 <-(t[2])
+    unit_size <- ceiling(log10(t2))
+    t <- t/(10^unit_size)
+    return(enframe(t, name = NULL))
+  } else
+    return(t)
+}
+
 
 matrix2flowset <- function(a_matrix){ 
   
@@ -53,6 +64,7 @@ input.pars <- list(
 )
 
 time <- ctx$cselect(ctx$cnames[[1]])
+time <- convert_to_seconds(time)
 
 data <- ctx$as.matrix() %>% t()
 data <- as.matrix(cbind(data, time))
@@ -76,6 +88,7 @@ qc_frame <- suppressWarnings(flowAI::flow_auto_qc(
   fcs_QC = FALSE,
   folder_results = FALSE
 ))
+
 
 qc_df <- as.data.frame(exprs(qc_frame))
 flag <- ifelse(qc_df[["QCvector"]] >= 10000, "fail", "pass")
