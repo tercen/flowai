@@ -101,7 +101,7 @@ qc_frame <- suppressWarnings(flowAI::flow_auto_qc(
 
 qc_df <- as.data.frame(exprs(qc_frame))
 flag <- ifelse(qc_df[["QCvector"]] >= 10000, "fail", "pass")
-qc_df <- cbind(qc_df["QCvector"], flag, .ci = (1:nrow(qc_df)))
+qc_df <- cbind(qc_df["QCvector"], flag, .ci = (0:(nrow(qc_df)-1)))
 
 result <- ctx$addNamespace(qc_df)
 ctx$save(result)
