@@ -52,6 +52,8 @@ matrix2flowset <- function(a_matrix){
 
 ctx <- tercenCtx()
 
+
+
 input.pars <- list(
   Detailed = ifelse(is.null(ctx$op.value('Detailed')), TRUE, as.logical(ctx$op.value('Detailed'))),
   second_fractionFR = ifelse(is.null(ctx$op.value('second_fractionFR')), 0.1, as.double(ctx$op.value('second_fractionFR'))),
@@ -99,6 +101,7 @@ qc_df <- cbind(qc_df["QCvector"], flag, .ci = (0:(nrow(qc_df)-1)))
 result <- ctx$addNamespace(qc_df)
 ctx$save(result)
 }
+
 
 if(input.pars$Detailed == TRUE){
 qc_FR <- suppressWarnings(flowAI::flow_auto_qc(
