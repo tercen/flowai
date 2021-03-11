@@ -71,6 +71,7 @@ data <- as.matrix(cbind(data, time))
 
 fc_frame <- matrix2flowset(data)
 
+if(detailed == FALSE){
 qc_frame <- suppressWarnings(flowAI::flow_auto_qc(
   fcsfiles = fc_frame,
   output = 2,
@@ -96,3 +97,82 @@ qc_df <- cbind(qc_df["QCvector"], flag, .ci = (0:(nrow(qc_df)-1)))
 
 result <- ctx$addNamespace(qc_df)
 ctx$save(result)
+}
+
+if(detailed == TRUE){qc_FR <- suppressWarnings(flowAI::flow_auto_qc(
+  remove_from = "FR",
+  fcsfiles = fc_frame,
+  output = 3,
+  timeCh = NULL,
+  second_fractionFR = input.pars$second_fractionFR,
+  alphaFR = input.pars$alphaFR,
+  decompFR = input.pars$decompFR,
+  outlier_binsFS = input.pars$outlier_binsFS, 
+  pen_valueFS = input.pars$pen_valueFS,
+  max_cptFS = input.pars$max_cptFS,
+  sideFM = input.pars$sideFM,
+  neg_valuesFM = input.pars$neg_valuesFM,
+  html_report = FALSE,
+  mini_report = FALSE,
+  fcs_QC = FALSE,
+  folder_results = FALSE
+))
+
+qc_FS <- suppressWarnings(flowAI::flow_auto_qc(
+  remove_from = "FS",
+  fcsfiles = fc_frame,
+  output = 3,
+  timeCh = NULL,
+  second_fractionFR = input.pars$second_fractionFR,
+  alphaFR = input.pars$alphaFR,
+  decompFR = input.pars$decompFR,
+  outlier_binsFS = input.pars$outlier_binsFS, 
+  pen_valueFS = input.pars$pen_valueFS,
+  max_cptFS = input.pars$max_cptFS,
+  sideFM = input.pars$sideFM,
+  neg_valuesFM = input.pars$neg_valuesFM,
+  html_report = FALSE,
+  mini_report = FALSE,
+  fcs_QC = FALSE,
+  folder_results = FALSE
+))
+
+qc_FM <- suppressWarnings(flowAI::flow_auto_qc(
+  remove_from = "FM",
+  fcsfiles = fc_frame,
+  output = 3,
+  timeCh = NULL,
+  second_fractionFR = input.pars$second_fractionFR,
+  alphaFR = input.pars$alphaFR,
+  decompFR = input.pars$decompFR,
+  outlier_binsFS = input.pars$outlier_binsFS, 
+  pen_valueFS = input.pars$pen_valueFS,
+  max_cptFS = input.pars$max_cptFS,
+  sideFM = input.pars$sideFM,
+  neg_valuesFM = input.pars$neg_valuesFM,
+  html_report = FALSE,
+  mini_report = FALSE,
+  fcs_QC = FALSE,
+  folder_results = FALSE
+))
+
+qc_df <- data.frame(matrix(ncol=0, nrow=nrow(data)))
+
+qc_FR_list <- as.list(qc_FR[[1]])
+qc_FS_list <- as.list(qc_FS[[1]])
+qc_FM_list <- as.list(qc_FM[[1]])
+
+qc_df$FR <- ifelse(rownames(qc_df) %in% qc_FR_list, "FR", "")
+qc_df$FS <- ifelse(rownames(qc_df) %in% qc_FS_list, "FS", "")
+qc_df$FM <- ifelse(rownames(qc_df) %in% qc_FM_list, "FM", "")
+
+qc_df$QC <- paste(qc_df$FR, qc_df$FS, qc_df$FM, sep = "")
+qc_df$output <- ifelse(qc_df$QC == "", "pass", qc_df$QC)
+
+flowAI_QC <- ifelse(qc_df$QC == "", "pass", qc_df$QC)
+flowAI_QC <- as.data.frame(flowAI_QC)
+flowAI_QC <- cbind(flowAI_QC, .ci = (0:(nrow(qc_df)-1)))
+
+result <- ctx$addNamespace(flowAI_QC)
+ctx$save(result)
+}
