@@ -74,6 +74,7 @@ data <- as.matrix(cbind(data, time))
 
 fc_frame <- matrix2flowset(data)
 
+
 if(testing == FALSE){
 qc_frame <- suppressWarnings(flowAI::flow_auto_qc(
   fcsfiles = fc_frame,
@@ -101,7 +102,6 @@ qc_df <- cbind(qc_df["QCvector"], flag, .ci = (0:(nrow(qc_df)-1)))
 result <- ctx$addNamespace(qc_df)
 ctx$save(result)
 }
-
 
 if(testing == TRUE){
 qc_FR <- suppressWarnings(flowAI::flow_auto_qc(
