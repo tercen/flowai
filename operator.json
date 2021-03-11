@@ -6,12 +6,6 @@
   "urls": ["https://github.com/agouy/flowai_operator"],
   "properties": [
   {
-    "kind": "BooleanProperty",
-    "name": "Detailed",
-    "defaultValue": true,
-    "description": "Set to FALSE to only provide fail/pass, speeding up the analysis."
-  },
-  {
     "kind": "DoubleProperty",
     "name": "second_fractionFR",
     "defaultValue": 0.1,
