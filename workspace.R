@@ -1,12 +1,3 @@
-options("tercen.serviceUri"= "https://tercen.com/api/v1/")
-options("tercen.username"= "fnaji")
-options("tercen.password"= "obama")
-options("tercen.workflowId"= "52206b808b44cec67b034ec84f3cdc98")
-options("tercen.stepId"= "c5e912fe-bf39-4c80-a27f-82959b2ca422")
-getOption("tercen.workflowId")
-getOption("tercen.stepId")
-
-
 library(tercen)
 library(dplyr)
 library(tibble)
@@ -59,7 +50,9 @@ matrix2flowset <- function(a_matrix){
   return(flowset)
 }
 
-ctx <- tercenCtx()
+ctx <- tercenCtx(workflowId = "2b5291026ae8514a1a77d7d9190002cc",
+                 stepId = "e260a25e-5ae5-4f58-9743-e66e7093becb")
+
 
 input.pars <- list(
   second_fractionFR = ifelse(is.null(ctx$op.value('second_fractionFR')), 0.1, as.double(ctx$op.value('second_fractionFR'))),
@@ -80,9 +73,10 @@ data <- as.matrix(cbind(data, time))
 
 fc_frame <- matrix2flowset(data)
 
-qc_frame <- suppressWarnings(flowAI::flow_auto_qc(
+qc_FR <- suppressWarnings(flowAI::flow_auto_qc(
+  remove_from = "FR",
   fcsfiles = fc_frame,
-  output = 2,
+  output = 3,
   timeCh = NULL,
   second_fractionFR = input.pars$second_fractionFR,
   alphaFR = input.pars$alphaFR,
@@ -98,10 +92,61 @@ qc_frame <- suppressWarnings(flowAI::flow_auto_qc(
   folder_results = FALSE
 ))
 
+qc_FS <- suppressWarnings(flowAI::flow_auto_qc(
+  remove_from = "FS",
+  fcsfiles = fc_frame,
+  output = 3,
+  timeCh = NULL,
+  second_fractionFR = input.pars$second_fractionFR,
+  alphaFR = input.pars$alphaFR,
+  decompFR = input.pars$decompFR,
+  outlier_binsFS = input.pars$outlier_binsFS, 
+  pen_valueFS = input.pars$pen_valueFS,
+  max_cptFS = input.pars$max_cptFS,
+  sideFM = input.pars$sideFM,
+  neg_valuesFM = input.pars$neg_valuesFM,
+  html_report = FALSE,
+  mini_report = FALSE,
+  fcs_QC = FALSE,
+  folder_results = FALSE
+))
 
-qc_df <- as.data.frame(exprs(qc_frame))
-flag <- ifelse(qc_df[["QCvector"]] >= 10000, "fail", "pass")
-qc_df <- cbind(qc_df["QCvector"], flag, .ci = (0:(nrow(qc_df)-1)))
+qc_FM <- suppressWarnings(flowAI::flow_auto_qc(
+  remove_from = "FM",
+  fcsfiles = fc_frame,
+  output = 3,
+  timeCh = NULL,
+  second_fractionFR = input.pars$second_fractionFR,
+  alphaFR = input.pars$alphaFR,
+  decompFR = input.pars$decompFR,
+  outlier_binsFS = input.pars$outlier_binsFS, 
+  pen_valueFS = input.pars$pen_valueFS,
+  max_cptFS = input.pars$max_cptFS,
+  sideFM = input.pars$sideFM,
+  neg_valuesFM = input.pars$neg_valuesFM,
+  html_report = FALSE,
+  mini_report = FALSE,
+  fcs_QC = FALSE,
+  folder_results = FALSE
+))
 
-result <- ctx$addNamespace(qc_df)
+qc_df <- data.frame(matrix(ncol=0, nrow=nrow(data)))
+
+qc_FR_list <- as.list(qc_FR[[1]])
+qc_FS_list <- as.list(qc_FS[[1]])
+qc_FM_list <- as.list(qc_FM[[1]])
+
+qc_df$FR <- ifelse(rownames(qc_df) %in% qc_FR_list, "FR", "")
+qc_df$FS <- ifelse(rownames(qc_df) %in% qc_FS_list, "FS", "")
+qc_df$FM <- ifelse(rownames(qc_df) %in% qc_FM_list, "FM", "")
+
+qc_df$QC <- paste(qc_df$FR, qc_df$FS, qc_df$FM, sep = "")
+qc_df$output <- ifelse(qc_df$QC == "", "pass", qc_df$QC)
+
+flowAI_QC <- ifelse(qc_df$QC == "", "pass", qc_df$QC)
+flowAI_QC <- as.data.frame(flowAI_QC)
+flowAI_QC <- cbind(flowAI_QC, .ci = (0:(nrow(qc_df)-1)))
+
+result <- ctx$addNamespace(flowAI_QC)
 ctx$save(result)
+
