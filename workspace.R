@@ -1,6 +1,4 @@
 options("tercen.serviceUri"= "https://tercen.com/api/v1/")
-options("tercen.username"= "fnaji")
-options("tercen.password"= "obama")
 options("tercen.workflowId"= "52206b808b44cec67b034ec84f3cdc98")
 options("tercen.stepId"= "c5e912fe-bf39-4c80-a27f-82959b2ca422")
 getOption("tercen.workflowId")
