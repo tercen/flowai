@@ -9,7 +9,7 @@
 Input projection|.
 ---|---
 `row`   | represents the variables (e.g. channels, markers)
-`col`   | represents the observations (e.g. cells, samples, individuals) 
+`col`   | represents the observations (Use 'Time' on top.) 
 `y-axis`| measurement value
 
 
@@ -20,6 +20,7 @@ Output relations|.
 
 Input parameters|.
 ---|---
+`Detailed` | logical, FALSE will return only the QC_flag. TRUE will also return which event failed what part of the QC, separating the QC flag into flow rate/signal acquisition/dynamic range flags. 
 `second_fractionFR`| numeric, fraction of a second that is used to split the time channel in order to recreate the flow rate. Default is 0.1.
 `alphaFR` | numeric, level of statistical significance used to accept anomalies detected by the ESD method. Default is 0.01.
 `decompFR` | logical, indicating whether the flow rate should be decomposed in the trend and cyclical components. Default is TRUE and the ESD outlier detection will be executed on the trend component penalized by the magnitude of the cyclical component. If FALSE, the ESD outlier detection will be executed on the original flow rate.
