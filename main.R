@@ -74,106 +74,107 @@ fc_frame <- matrix2flowset(data)
 
 
 if(input.pars$Detailed == FALSE){
-qc_frame <- suppressWarnings(flowAI::flow_auto_qc(
-  fcsfiles = fc_frame,
-  output = 2,
-  timeCh = NULL,
-  second_fractionFR = input.pars$second_fractionFR,
-  alphaFR = input.pars$alphaFR,
-  decompFR = input.pars$decompFR,
-  outlier_binsFS = input.pars$outlier_binsFS, 
-  pen_valueFS = input.pars$pen_valueFS,
-  max_cptFS = input.pars$max_cptFS,
-  sideFM = input.pars$sideFM,
-  neg_valuesFM = input.pars$neg_valuesFM,
-  html_report = FALSE,
-  mini_report = FALSE,
-  fcs_QC = FALSE,
-  folder_results = FALSE
-))
-
-
-qc_df <- as.data.frame(exprs(qc_frame))
-flag <- ifelse(qc_df[["QCvector"]] >= 10000, "fail", "pass")
-qc_df <- cbind(qc_df["QCvector"], flag, .ci = (0:(nrow(qc_df)-1)))
-
-result <- ctx$addNamespace(qc_df)
-ctx$save(result)
+  qc_frame <- suppressWarnings(flowAI::flow_auto_qc(
+    fcsfiles = fc_frame,
+    output = 2,
+    timeCh = NULL,
+    second_fractionFR = input.pars$second_fractionFR,
+    alphaFR = input.pars$alphaFR,
+    decompFR = input.pars$decompFR,
+    outlier_binsFS = input.pars$outlier_binsFS, 
+    pen_valueFS = input.pars$pen_valueFS,
+    max_cptFS = input.pars$max_cptFS,
+    sideFM = input.pars$sideFM,
+    neg_valuesFM = input.pars$neg_valuesFM,
+    html_report = FALSE,
+    mini_report = FALSE,
+    fcs_QC = FALSE,
+    folder_results = FALSE
+  ))
+  
+  
+  qc_df <- as.data.frame(exprs(qc_frame))
+  flag <- ifelse(qc_df[["QCvector"]] >= 10000, "fail", "pass")
+  qc_df <- cbind(flag, .ci = (0:(nrow(qc_df)-1)))
+  
+  result <- ctx$addNamespace(qc_df)
+  ctx$save(result)
 }
 
 if(input.pars$Detailed == TRUE){
-qc_FR <- suppressWarnings(flowAI::flow_auto_qc(
-  remove_from = "FR",
-  fcsfiles = fc_frame,
-  output = 3,
-  timeCh = NULL,
-  second_fractionFR = input.pars$second_fractionFR,
-  alphaFR = input.pars$alphaFR,
-  decompFR = input.pars$decompFR,
-  outlier_binsFS = input.pars$outlier_binsFS, 
-  pen_valueFS = input.pars$pen_valueFS,
-  max_cptFS = input.pars$max_cptFS,
-  sideFM = input.pars$sideFM,
-  neg_valuesFM = input.pars$neg_valuesFM,
-  html_report = FALSE,
-  mini_report = FALSE,
-  fcs_QC = FALSE,
-  folder_results = FALSE
-))
-
-qc_FS <- suppressWarnings(flowAI::flow_auto_qc(
-  remove_from = "FS",
-  fcsfiles = fc_frame,
-  output = 3,
-  timeCh = NULL,
-  second_fractionFR = input.pars$second_fractionFR,
-  alphaFR = input.pars$alphaFR,
-  decompFR = input.pars$decompFR,
-  outlier_binsFS = input.pars$outlier_binsFS, 
-  pen_valueFS = input.pars$pen_valueFS,
-  max_cptFS = input.pars$max_cptFS,
-  sideFM = input.pars$sideFM,
-  neg_valuesFM = input.pars$neg_valuesFM,
-  html_report = FALSE,
-  mini_report = FALSE,
-  fcs_QC = FALSE,
-  folder_results = FALSE
-))
-
-qc_FM <- suppressWarnings(flowAI::flow_auto_qc(
-  remove_from = "FM",
-  fcsfiles = fc_frame,
-  output = 3,
-  timeCh = NULL,
-  second_fractionFR = input.pars$second_fractionFR,
-  alphaFR = input.pars$alphaFR,
-  decompFR = input.pars$decompFR,
-  outlier_binsFS = input.pars$outlier_binsFS, 
-  pen_valueFS = input.pars$pen_valueFS,
-  max_cptFS = input.pars$max_cptFS,
-  sideFM = input.pars$sideFM,
-  neg_valuesFM = input.pars$neg_valuesFM,
-  html_report = FALSE,
-  mini_report = FALSE,
-  fcs_QC = FALSE,
-  folder_results = FALSE
-))
-
-qc_df <- data.frame(matrix(ncol=0, nrow=nrow(data)))
-
-qc_FR_list <- as.list(qc_FR[[1]])
-qc_FS_list <- as.list(qc_FS[[1]])
-qc_FM_list <- as.list(qc_FM[[1]])
-
-qc_df$FlowRate_flag <- ifelse(rownames(qc_df) %in% qc_FR_list, "fail", "pass")
-qc_df$SigAcqtn_flag <- ifelse(rownames(qc_df) %in% qc_FS_list, "fail", "pass")
-qc_df$DynRange_flag <- ifelse(rownames(qc_df) %in% qc_FM_list, "fail", "pass")
-
-qc_df$QC_flag <- paste(qc_df$FlowRate_flag, qc_df$SigAcqtn_flag, qc_df$DynRange_flag, sep = "")
-qc_df$QC_flag <- ifelse(qc_df$QC_flag == "passpasspass", "pass", "fail")
-
-flowAI_QC <- cbind(qc_df, .ci = (0:(nrow(qc_df)-1)))
-
-result <- ctx$addNamespace(flowAI_QC)
-ctx$save(result)
+  qc_FR <- suppressWarnings(flowAI::flow_auto_qc(
+    remove_from = "FR",
+    fcsfiles = fc_frame,
+    output = 3,
+    timeCh = NULL,
+    second_fractionFR = input.pars$second_fractionFR,
+    alphaFR = input.pars$alphaFR,
+    decompFR = input.pars$decompFR,
+    outlier_binsFS = input.pars$outlier_binsFS, 
+    pen_valueFS = input.pars$pen_valueFS,
+    max_cptFS = input.pars$max_cptFS,
+    sideFM = input.pars$sideFM,
+    neg_valuesFM = input.pars$neg_valuesFM,
+    html_report = FALSE,
+    mini_report = FALSE,
+    fcs_QC = FALSE,
+    folder_results = FALSE
+  ))
+  
+  qc_FS <- suppressWarnings(flowAI::flow_auto_qc(
+    remove_from = "FS",
+    fcsfiles = fc_frame,
+    output = 3,
+    timeCh = NULL,
+    second_fractionFR = input.pars$second_fractionFR,
+    alphaFR = input.pars$alphaFR,
+    decompFR = input.pars$decompFR,
+    outlier_binsFS = input.pars$outlier_binsFS, 
+    pen_valueFS = input.pars$pen_valueFS,
+    max_cptFS = input.pars$max_cptFS,
+    sideFM = input.pars$sideFM,
+    neg_valuesFM = input.pars$neg_valuesFM,
+    html_report = FALSE,
+    mini_report = FALSE,
+    fcs_QC = FALSE,
+    folder_results = FALSE
+  ))
+  
+  qc_FM <- suppressWarnings(flowAI::flow_auto_qc(
+    remove_from = "FM",
+    fcsfiles = fc_frame,
+    output = 3,
+    timeCh = NULL,
+    second_fractionFR = input.pars$second_fractionFR,
+    alphaFR = input.pars$alphaFR,
+    decompFR = input.pars$decompFR,
+    outlier_binsFS = input.pars$outlier_binsFS, 
+    pen_valueFS = input.pars$pen_valueFS,
+    max_cptFS = input.pars$max_cptFS,
+    sideFM = input.pars$sideFM,
+    neg_valuesFM = input.pars$neg_valuesFM,
+    html_report = FALSE,
+    mini_report = FALSE,
+    fcs_QC = FALSE,
+    folder_results = FALSE
+  ))
+  
+  qc_df <- data.frame(matrix(ncol=0, nrow=nrow(data)))
+  
+  qc_FR_list <- as.list(qc_FR[[1]])
+  qc_FS_list <- as.list(qc_FS[[1]])
+  qc_FM_list <- as.list(qc_FM[[1]])
+  
+  qc_df$FlowRate_FR <- ifelse(rownames(qc_df) %in% qc_FR_list, "fail", "pass")
+  qc_df$SigAcqtn_FS <- ifelse(rownames(qc_df) %in% qc_FS_list, "fail", "pass")
+  qc_df$DynRange_FM <- ifelse(rownames(qc_df) %in% qc_FM_list, "fail", "pass")
+  
+  qc_df$QC_flag <- paste(qc_df$FlowRate_FM, qc_df$SigAcqtn_FS, qc_df$DynRange_FM, sep = "")
+  qc_df$QC_flag <- ifelse(qc_df$QC_flag == "passpasspass", "pass", "fail")
+  
+  flowAI_QC <- cbind(qc_df, .ci = (0:(nrow(qc_df)-1)))
+  
+  result <- ctx$addNamespace(flowAI_QC)
+  ctx$save(result)
 }
+
