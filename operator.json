@@ -15,7 +15,7 @@
     "kind": "DoubleProperty",
     "name": "second_fractionFR",
     "defaultValue": 0.1,
-    "description": "Fraction of a second that is used to split the time channel"
+    "description": "Fraction of a second that is used to split the time channel. Affects flow rate QC."
   },
   {
     "kind": "DoubleProperty",
@@ -27,31 +27,31 @@
     "kind": "BooleanProperty",
     "name": "decompFR",
     "defaultValue": true,
-    "description": "Indicate whether the flow rate should be decomposed in the trend and cyclical components"
+    "description": "Indicate whether the flow rate should be decomposed in the trend and cyclical components. Affects flow rate QC."
   },
   {
     "kind": "BooleanProperty",
     "name": "outlier_binsFS",
     "defaultValue": false,
-    "description": "Indicate whether outlier bins (not events) have to be removed before the changepoint detection"
+    "description": "Indicate whether outlier bins (not events) have to be removed before the changepoint detection. Affects sygnal acquisition QC."
   },
   {
     "kind": "DoubleProperty",
     "name": "pen_valueFS",
     "defaultValue": 500,
-    "description": "Value of the penalty for the changepoint detection algorithm"
+    "description": "Value of the penalty for the changepoint detection algorithm. Affects sygnal acquisition QC."
   },
   {
     "kind": "DoubleProperty",
     "name": "max_cptFS",
     "defaultValue": 3,
-    "description": "Maximum number of changepoints that can be detected for each channel"
+    "description": "Maximum number of changepoints that can be detected for each channel. Affects sygnal acquisition QC."
   },
   {
     "kind": "EnumeratedProperty",
     "name": "sideFM",
     "defaultValue": "both",
-    "description": "Indicate whether the dynamic range check has to be executed on both limits",
+    "description": "Indicate whether the dynamic range check has to be executed on both limits. Affects dynamic range QC.",
 	  "values": [
       "both",
       "upper",
@@ -62,7 +62,7 @@
     "kind": "EnumeratedProperty",
     "name": "neg_valuesFM",
     "defaultValue": "1",
-    "description": "Indicate the method to use for the removal of the anomalies from the lower limit of the dynamic range. Use 1 to remove negative outliers or use 2 to truncate the negative values to the cut-off indicated in the FCS file.",
+    "description": "Indicate the method to use for the removal of the anomalies from the lower limit of the dynamic range. Use 1 to remove negative outliers or use 2 to truncate the negative values to the cut-off indicated in the FCS file. Affects dynamic range QC.",
 	  "values": [
       "1",
       "2"
@@ -70,4 +70,3 @@
   }
   ]
 }
-
