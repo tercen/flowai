@@ -1,6 +1,6 @@
 {
-  "name": "flowai",
-  "description": "flowai quality control operator",
+  "name": "FlowAI",
+  "description": "Flow Cytometry Automatic or Interactive anomaly detection: An alglorithm to perform quality control on FCS data.",
   "tags": ["flowcytometry"],
   "authors": ["tercen"],
   "urls": ["https://github.com/agouy/flowai_operator"],
