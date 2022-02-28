@@ -1,0 +1,21 @@
+{
+  "kind": "TableSchema",
+  "columns": [
+    {
+      "kind": "ColumnSchema",
+      "name": "TIME",
+      "type": "double"
+    },
+    {
+      "kind": "ColumnSchema",
+      "name": "CHANNEL",
+      "type": "string"
+    },
+    {
+      "kind": "ColumnSchema",
+      "name": "Value",
+      "type": "double"
+    },
+    
+  ]
+}

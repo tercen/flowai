@@ -4,6 +4,12 @@ library(tibble)
 library(flowCore)
 library(flowAI)
 
+options("tercen.workflowId" = "c18b8d0cd4ce6dffa7e1308ff2008ba3")
+options("tercen.stepId"     = "82856bea-3c5b-47a2-9e89-6f1f4e069221")
+
+getOption("tercen.workflowId")
+getOption("tercen.stepId")
+
 convert_to_seconds <- function(t) {
   t<- t[[1, drop = TRUE]]
   if (length(t) > 2) {
@@ -50,8 +56,7 @@ matrix2flowset <- function(a_matrix){
   return(flowset)
 }
 
-ctx <- tercenCtx(workflowId = "2b5291026ae8514a1a77d7d9190002cc",
-                 stepId = "e260a25e-5ae5-4f58-9743-e66e7093becb")
+ctx <- tercenCtx()
 
 
 input.pars <- list(
@@ -66,7 +71,7 @@ input.pars <- list(
 )
 
 time <- ctx$cselect(ctx$cnames[[1]])
-time <- convert_to_seconds(time)
+#time <- convert_to_seconds(time)
 
 data <- ctx$as.matrix() %>% t()
 data <- as.matrix(cbind(data, time))

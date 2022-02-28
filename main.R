@@ -65,7 +65,7 @@ input.pars <- list(
 )
 
 time <- ctx$cselect(ctx$cnames[[1]])
-time <- convert_to_seconds(time)
+#time <- convert_to_seconds(time)
 
 data <- ctx$as.matrix() %>% t()
 data <- as.matrix(cbind(data, time))
