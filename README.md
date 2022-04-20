@@ -45,6 +45,7 @@ This operator wraps the `flowAI::flow_auto_qc` function from the [flowAI R packa
 
 ##### See Also
 
-[flowsom operator](https://github.com/tercen/flowsom_operator)
+[flowcut operator](https://github.com/tercen/flowcut_operator)\
+[flowclean operator](https://github.com/tercen/flowclean_operator)
 
 
