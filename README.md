@@ -1,6 +1,6 @@
 # flowai operator
 
-#### Description
+##### Description
 
 `flowai` operator performs quality control on flowcytometry data.
 
@@ -41,12 +41,7 @@ This operator is able to perform an automatic quality control on FCS data acquir
 
 The quality control enables the detection and removal of anomalies. The operator returns a QCvector value for each cell, values below 10000 are given to cells who have passed the QC, above 10000 for those who did not pass the QC criteria.
 
-This operator wraps the `flowAI::flow_auto_qc` function from the [flowAI R package](http://bioconductor.org/packages/release/bioc/html/flowAI.html)
-
-
-#### Reference
-
-[flowAI R package]((http://bioconductor.org/packages/release/bioc/html/flowAI.html))
+This operator wraps the `flowAI::flow_auto_qc` function from the [flowAI R package](http://bioconductor.org/packages/release/bioc/html/flowAI.html).
 
 ##### See Also
 
