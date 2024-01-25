@@ -1,6 +1,6 @@
 {
   "name": "FlowAI",
-  "description": "Flow Cytometry Automatic or Interactive anomaly detection: An alglorithm to perform quality control on FCS data.",
+  "description": "Performs quality control of flow cytometry data.",
   "tags": [
     "flow cytometry",
     "QC"
